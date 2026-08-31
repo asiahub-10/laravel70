@@ -23,7 +23,9 @@
                     <li>Email support</li>
                     <li>Help center access</li>
                 </ul>
-                <button type="button" class="w-100 btn btn-lg btn-outline-primary">Sign up for free</button>
+                <x-btn class="w-100 btn-lg btn-outline-dark">
+                    Sign up for free
+                </x-btn>
             </div>
         </div>
     </div>
@@ -40,7 +42,9 @@
                     <li>Priority email support</li>
                     <li>Help center access</li>
                 </ul>
-                <button type="button" class="w-100 btn btn-lg btn-primary">Get started</button>
+                <x-btn type="submit" class="w-100 btn-lg btn-primary">
+                    Get started
+                </x-btn>
             </div>
         </div>
     </div>
@@ -57,7 +61,9 @@
                     <li>Phone and email support</li>
                     <li>Help center access</li>
                 </ul>
-                <button type="button" class="w-100 btn btn-lg btn-primary">Contact us</button>
+                <x-btn type="reset" class="w-100 btn-lg btn-outline-primary" disabled>
+                    Contact us
+                </x-btn>
             </div>
         </div>
     </div>
