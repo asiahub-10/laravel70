@@ -3,6 +3,12 @@
 @section("title", "Pricing")
 
 @section("content")
+<div>
+    <h5>Organization: {{$org}}</h5>
+    <h5>TSP: {{$tsp}}</h5>
+    <h5>Round: {{$round}}</h5>
+</div>
+
 <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
     <h1 class="display-4 fw-normal">Pricing</h1>
     <p class="fs-5 text-muted">Quickly build an effective pricing table for your potential customers with this Bootstrap
