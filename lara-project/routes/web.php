@@ -9,8 +9,11 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return view('admin.pages.dashboard');
 });
+
 Route::get('/users', [UserController::class, 'index'])->name('users.index');
 Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
+Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
+Route::get('/users/{id}', [UserController::class, 'show'])->name('users.show');
 
 // Auth
 Route::get('/login', function () {

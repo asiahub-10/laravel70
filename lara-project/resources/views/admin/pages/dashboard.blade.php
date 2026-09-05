@@ -375,8 +375,8 @@
 @endsection
 
 @section('style')
-   <link rel="stylesheet" href="{{ asset(assets/libs/apexcharts/apexcharts.css) }}">
-    <link rel="stylesheet" href="{{ asset(assets/libs/flatpickr/flatpickr.min.css) }}">
+   <link rel="stylesheet" href="{{ asset('assets/libs/apexcharts/apexcharts.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/libs/flatpickr/flatpickr.min.css') }}">
 @endsection
 
 @section('script')
