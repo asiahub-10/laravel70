@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -31,10 +33,10 @@ class UserController extends Controller
         //         ->select('u.id', 'u.name', 'u.email', 'r.name as role')
         //         ->first();
         $users = User::join('roles as r', 'users.role_id', '=', 'r.id')
-                ->orderBy('id', 'desc')
-                ->select('users.id', 'users.name', 'users.email', 'r.name as role')
-                // ->get();
-                ->paginate(10);
+            ->orderBy('id', 'desc')
+            ->select('users.id', 'users.name', 'users.email', 'r.name as role')
+            // ->get();
+            ->paginate(10);
 
         // dd($users);
         return view('admin.pages.user.index', compact('users'));
@@ -45,7 +47,10 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('admin.pages.user.create');
+        // $roles = Role::all();
+        $roles = Role::orderBy('name', 'asc')->get();
+        // return view('admin.pages.user.create', compact('roles'));
+        return view('admin.pages.user.create', ['roles' => $roles]);
     }
 
     /**
@@ -53,7 +58,42 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // dd($request->all());
+        $request->validate([
+            'name'                  => 'required|min:3|max:100',
+            'email'                 => 'required|email|unique:users,email',
+            'role_id'               => 'required',
+            // 'password' => 'required|min:3|max:15|confirmed',
+            'password'              => 'required|min:3|max:15',
+            'password_confirmation' => 'required|same:password',
+        ]);
+
+        // $user = User::create([
+        //     'name'      => $request->name,
+        //     'email'     => $request->email,
+        //     'role_id'   => $request->role_id,
+        //     'password'  => Hash::make($request->password),
+        // ]);
+
+        $user           = new User();
+        $user->name     = $request->name;
+        $user->email    = $request->email;
+        $user->role_id  = $request->role_id;
+        $user->password = Hash::make($request->password);
+        // $user->save();
+
+        // $user = false;
+
+        // if ($user) {
+        if ($user->save()) {
+            return redirect()
+                    ->route('users.index')
+                    ->with('success', 'User created successfully');
+        }else {
+            return redirect()
+                    ->route('users.create')
+                    ->with('error', 'User not created');
+        }
     }
 
     /**
@@ -61,7 +101,12 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        return view('admin.pages.user.show');
+        $user = User::join('roles as r', 'users.role_id', '=', 'r.id')
+                ->where('users.id', $id)
+                ->select('users.id', 'users.name', 'users.email', 'r.name as role')
+                ->first();
+        // dd($user);
+        return view('admin.pages.user.show', ['user' => $user]);
     }
 
     /**
@@ -69,7 +114,13 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
-        return view('admin.pages.user.edit');
+        $roles = Role::all();
+        $user = User::find($id);
+        // dd($user);
+        return view('admin.pages.user.edit', [
+            'user'  => $user,
+            'roles' => $roles
+        ]);
     }
 
     /**
@@ -77,7 +128,36 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        // dd($request->all());
+        $request->validate([
+            'name'                  => 'required|min:3|max:100',
+            'email'                 => "required|email|unique:users,email,$id",
+            // 'email'                 => 'required|email|unique:users,email'.$id,
+            'role_id'               => 'required',
+        ]);
+
+        // $user = User::find($id);
+        // $user->name     = $request->name;
+        // $user->email    = $request->email;
+        // $user->role_id  = $request->role_id;
+        // $user->save();
+        
+        $user = User::where('id', $id)
+                ->update([
+                    'name'      => $request->name,
+                    'email'     => $request->email,
+                    'role_id'   => $request->role_id
+                ]);
+
+        if ($user) {
+            return redirect()
+                    ->route('users.index')
+                    ->with('success', 'User updated successfully');
+        }else {
+            return redirect()
+                    ->route('users.edit', $id)
+                    ->with('error', 'Something went wrong. User not updated');
+        }
     }
 
     /**
@@ -85,6 +165,14 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        // dd($id);
+        // $user = User::find($id);
+        // $user->delete();
+
+        User::destroy($id);
+
+        return redirect()
+                ->route('users.index')
+                ->with('success', 'User deleted successfully');
     }
 }

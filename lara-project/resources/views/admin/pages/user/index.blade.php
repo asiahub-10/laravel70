@@ -9,6 +9,13 @@
         </a>
     </x-admin.phead>
 
+    @if (session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
     <div class="table-card-custom">
         <!-- Header Controls -->
         <div class="table-header-control">
@@ -65,12 +72,16 @@
                             <td class="table-product-name">{{ $item->role }}</td>
                             <td>
                                 <div class="d-flex justify-content-center gap-1">
-                                    <a href="{{ route('users.show', ['id' => 1]) }}" class="table-btn-action"
+                                    <a href="{{ route('users.show', ['id' => $item->id]) }}" class="table-btn-action"
                                         title="View details"><i class="bi bi-eye"></i></a>
-                                    <a href="{{ route('users.edit', ['id' => 1]) }}" class="table-btn-action"
+                                    <a href="{{ route('users.edit', ['id' => $item->id]) }}" class="table-btn-action"
                                         title="Edit row"><i class="bi bi-pencil"></i></a>
-                                    <a href="#" class="table-btn-action delete" title="Delete row"><i
-                                            class="bi bi-trash"></i></a>
+                                    <form action="{{ route('users.destroy', ['id' => $item->id]) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="table-btn-action delete" title="Delete row"><i
+                                                class="bi bi-trash"></i></button>
+                                    </form>
                                 </div>
                             </td>
                         </tr>
