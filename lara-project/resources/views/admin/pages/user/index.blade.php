@@ -72,16 +72,22 @@
                             <td class="table-product-name">{{ $item->role }}</td>
                             <td>
                                 <div class="d-flex justify-content-center gap-1">
-                                    <a href="{{ route('users.show', ['id' => $item->id]) }}" class="table-btn-action"
+                                    <a href="{{ route('users.show', ['user' => $item->id]) }}" class="table-btn-action"
                                         title="View details"><i class="bi bi-eye"></i></a>
-                                    <a href="{{ route('users.edit', ['id' => $item->id]) }}" class="table-btn-action"
+                                    <a href="{{ route('users.edit', ['user' => $item->id]) }}" class="table-btn-action"
                                         title="Edit row"><i class="bi bi-pencil"></i></a>
-                                    <form action="{{ route('users.destroy', ['id' => $item->id]) }}" method="POST">
+                                    {{-- <form action="{{ route('users.destroy', ['user' => $item->id]) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="table-btn-action delete" title="Delete row"><i
                                                 class="bi bi-trash"></i></button>
-                                    </form>
+                                    </form> --}}
+                                    <button type="button" class="table-btn-action delete" 
+                                    data-id="{{ $item->id }}" 
+                                    data-name="{{ $item->name }}" 
+                                    data-bs-toggle="modal" data-bs-target="#modalDelete"
+                                     title="Delete row">
+                                     <i class="bi bi-trash"></i></button>
                                 </div>
                             </td>
                         </tr>
@@ -95,6 +101,21 @@
             {{ $users->links() }}
         </div>
     </div>
+
+    <x-admin.modal id="modalDelete" title="Delete User">
+        <div class="text-center">
+            <i class="bi bi-trash fs-1 text-danger"></i>
+            <p class="mt-2">Are you sure you want to delete this user?</p>
+            <span class="name fw-bold badge border border-danger text-danger py-2 px-3"></span>
+            <hr>
+            <form method="POST">
+                @csrf
+                @method('DELETE')
+                <button type="button" class="btn btn-outline-secondary me-1" data-bs-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+        </div>
+    </x-admin.modal>
 @endsection
 
 @section('style')
@@ -108,4 +129,19 @@
             justify-content: space-between;
         }
     </style>
+@endsection
+
+@section('script')
+<script>
+    document.querySelectorAll('.delete').forEach(button => {
+        button.addEventListener('click', function () {
+            let id = this.dataset.id;
+            let name = this.dataset.name;
+            // alert(id);
+            document.querySelector('#modalDelete .name').innerText = name;
+            // document.querySelector('#modalDelete form').action = `/users/${id}`;
+            document.querySelector('#modalDelete form').action = `{{ route('users.destroy', ['user' => '_id']) }}`.replace('_id', id);
+        })
+    })
+</script>
 @endsection
