@@ -64,7 +64,7 @@
                             <td>
                                 <div class="d-flex align-items-center gap-3">
                                     @if ($item->image)
-                                        <img src="{{ $item->image }}" alt="" class="rounded-3" width="60" height="60">
+                                        <img src="{{ asset($item->image) }}" alt="" class="rounded-3" width="60" height="60">
                                     @else
                                         <img src="https://placehold.net/product-400x400.png" alt="" class="rounded-3" width="60" height="60">
                                     @endif
@@ -156,8 +156,8 @@
             let name = this.dataset.name;
             // alert(id);
             document.querySelector('#modalDelete .name').innerText = name;
-            // document.querySelector('#modalDelete form').action = `/users/${id}`;
-            document.querySelector('#modalDelete form').action = `{{ route('users.destroy', ['user' => '_id']) }}`.replace('_id', id);
+            // document.querySelector('#modalDelete form').action = `/products/${id}`;
+            document.querySelector('#modalDelete form').action = `{{ route('products.destroy', ['product' => '_id']) }}`.replace('_id', id);
         })
     })
 </script>

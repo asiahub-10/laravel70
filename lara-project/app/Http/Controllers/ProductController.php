@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
+use App\Services\UploadImgService;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -63,9 +64,11 @@ class ProductController extends Controller
         if($request->hasFile('image')) {
             // dd("Image Found");
             // $imgName = time() . '.' . $request->image->extension();
-            $imgName = time() . '.' . $request->image->getClientOriginalExtension();
-            // dd($request->image->getClientOriginalExtension());
-            $request->image->move(public_path('uploads'), $imgName);
+            // $imgName = time() . '.' . $request->image->getClientOriginalExtension();
+            // // dd($request->image->getClientOriginalExtension());
+            // $request->image->move(public_path('uploads'), $imgName);
+
+            $imgName = UploadImgService::upload($request->image, 'uploads/products');
 
             Product::create([
                 'name'          => $request->name,
@@ -76,7 +79,8 @@ class ProductController extends Controller
                 'category_id'   => $request->category_id,
                 'brand_id'      => $request->brand_id,
                 'active'        => $request->active ? 1 : 0,
-                'image'         => "uploads/" . $imgName,
+                // 'image'         => "uploads/" . $imgName,
+                'image'         => $imgName,
             ]);
             return redirect()->route('products.index')->with('success', 'Product created successfully.');
         }else{
@@ -126,6 +130,11 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        dd($product);
+        if($product->image) {
+            unlink(public_path($product->image));
+        }
+        Product::destroy($product->id);
+        return redirect()->route('products.index')->with('success', 'Product deleted successfully.');
     }
 }
