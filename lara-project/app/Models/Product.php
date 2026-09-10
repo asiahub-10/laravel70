@@ -11,6 +11,7 @@ class Product extends Model
 {
     /** @use HasFactory<\Database\Factories\ProductFactory> */
     use HasFactory;
+    // protected $table = 'products';
     public function category()
     {
         return $this->belongsTo(Category::class);

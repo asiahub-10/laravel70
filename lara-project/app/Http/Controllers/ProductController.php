@@ -130,7 +130,7 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        dd($product);
+        // dd($product);
         if($product->image) {
             unlink(public_path($product->image));
         }
