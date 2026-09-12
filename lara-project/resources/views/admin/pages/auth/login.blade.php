@@ -14,29 +14,33 @@
     <p class="login-subtitle">Please sign in to access your dashboard</p>
 
     <!-- Login Form -->
-    <form action="index.html" method="GET" id="loginForm" class="needs-validation" novalidate>
+    <form method="POST" action="{{ route('login.store') }}">
+        @csrf
 
         <!-- Email Input Group -->
         <div class="login-form-group">
-            <label for="email" class="login-form-label">Email Address</label>
+            <label class="login-form-label">Email Address</label>
             <div class="login-input-group">
                 <i class="bi bi-envelope input-icon"></i>
-                <input type="email" id="email" class="login-input" placeholder="name@company.com" required>
+                <input type="email" name="email" class="login-input" placeholder="name@company.com" 
+                value="{{ old('email') ?? 'asia@mail.com' }}">
             </div>
         </div>
+        <x-input-error :messages="$errors->get('email')" class="mt-2 text-danger" />
 
         <!-- Password Input Group -->
         <div class="login-form-group">
             <label for="password" class="login-form-label">Password</label>
             <div class="login-input-group">
                 <i class="bi bi-shield-lock input-icon"></i>
-                <input type="password" id="password" class="login-input login-input-password" placeholder="••••••••"
-                    required>
+                <input type="password" name="password" class="login-input login-input-password" placeholder="••••••••"
+                    value="123">
                 <button type="button" class="password-toggle-btn" id="toggle-password" aria-label="Show password">
                     <i class="bi bi-eye"></i>
                 </button>
             </div>
         </div>
+        <x-input-error :messages="$errors->get('password')" class="mt-2 text-danger" />
 
         <!-- Options (Remember me & Forgot Password) -->
         <div class="login-options">
