@@ -22,7 +22,7 @@ class ProductController extends Controller
         //                     ->get();
         $products = Product::with('category', 'brand')
             ->orderby('id', 'desc')
-            ->get();
+            ->paginate();
         // dd($products->first()->category->name);
         return view('admin.pages.product.index', compact('products'));
     }

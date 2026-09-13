@@ -31,13 +31,13 @@ class DatabaseSeeder extends Seeder
         //     ['name' => 'Editor'],
         //     ['name' => 'Vendor'],
         // ]);
-        // Brand::factory(5)->create();
-        // Category::factory()->createMany([
-        //     ['name' => 'Clothes'],
-        //     ['name' => 'Watches'],
-        //     ['name' => 'Glasses'],
-        //     ['name' => 'Shoes'],
-        // ]);
+        Brand::factory(5)->create();
+        Category::factory()->createMany([
+            ['name' => 'Clothes'],
+            ['name' => 'Watches'],
+            ['name' => 'Glasses'],
+            ['name' => 'Shoes'],
+        ]);
         Product::factory(30)->create();
     }
 }

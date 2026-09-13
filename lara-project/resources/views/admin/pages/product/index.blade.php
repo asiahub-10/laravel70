@@ -79,7 +79,7 @@
                                 {{ $item->category->name }}
                                 @endif
                             </td>
-                            <td>{{ $item->brand->name }}</td>
+                            <td>{{ $item->brand->name ?? '-' }}</td>
                             <td>{{ $item->price }}</td>
                             <td>{{ $item->quantity }}</td>
                             <td>
@@ -115,7 +115,7 @@
 
         <!-- Footer Controls / Pagination -->
         <div class="table-footer-control">
-            {{-- {{ $users->links() }} --}}
+            {{ $products->links() }}
         </div>
     </div>
 

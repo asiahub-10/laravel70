@@ -4,9 +4,11 @@
 
 @section('content')
     <x-admin.phead title="Users - Edit" subtitle="Update this information.">
-        <a href="{{ route('users.index') }}" class="btn-custom btn-custom-outline-secondary" type="button">
-            <i class="bi bi-arrow-left"></i> Back
-        </a>
+        @if (auth()->user()->role_id != 5)
+            <a href="{{ route('users.index') }}" class="btn-custom btn-custom-outline-secondary" type="button">
+                <i class="bi bi-arrow-left"></i> Back
+            </a>
+        @endif
     </x-admin.phead>
 
     @if (session('error'))
@@ -21,7 +23,7 @@
         <form action="{{ route('users.update', ['user' => $user->id]) }}" method="POST">
             @csrf
             @method('PUT')
-            
+
             {{-- @if ($errors->any())
                 <div class="alert alert-danger">
                     <ul>
@@ -55,8 +57,7 @@
                 <select name="role_id" class="form-select-custom">
                     <option value="0" selected disabled>Select Role...</option>
                     @foreach ($roles as $item)
-                        <option value="{{ $item->id }}" 
-                            @selected($user->role_id == $item->id)>
+                        <option value="{{ $item->id }}" @selected($user->role_id == $item->id)>
                             {{ $item->name }}
                         </option>
                     @endforeach

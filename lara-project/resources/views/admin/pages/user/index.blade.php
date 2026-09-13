@@ -82,12 +82,14 @@
                                         <button type="submit" class="table-btn-action delete" title="Delete row"><i
                                                 class="bi bi-trash"></i></button>
                                     </form> --}}
+                                    @if(auth()->user()->role_id == 1 || auth()->user()->role_id == 2)
                                     <button type="button" class="table-btn-action delete" 
                                     data-id="{{ $item->id }}" 
                                     data-name="{{ $item->name }}" 
                                     data-bs-toggle="modal" data-bs-target="#modalDelete"
                                      title="Delete row">
                                      <i class="bi bi-trash"></i></button>
+                                    @endif
                                 </div>
                             </td>
                         </tr>

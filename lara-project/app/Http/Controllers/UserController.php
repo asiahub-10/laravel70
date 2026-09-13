@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -32,6 +33,10 @@ class UserController extends Controller
         //         ->orderBy('id', 'desc')
         //         ->select('u.id', 'u.name', 'u.email', 'r.name as role')
         //         ->first();
+        if(Auth::user()->role_id == 5) {
+            abort(403);
+            exit;
+        }
         $users = User::join('roles as r', 'users.role_id', '=', 'r.id')
             ->orderBy('id', 'desc')
             ->select('users.id', 'users.name', 'users.email', 'r.name as role')
@@ -47,6 +52,10 @@ class UserController extends Controller
      */
     public function create()
     {
+        if(Auth::user()->role_id == 5) {
+            abort(403);
+            exit;
+        }
         // $roles = Role::all();
         $roles = Role::orderBy('name', 'asc')->get();
         // return view('admin.pages.user.create', compact('roles'));
@@ -58,6 +67,10 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        if(Auth::user()->role_id == 5) {
+            abort(403);
+            exit;
+        }
         // dd($request->all());
         $request->validate([
             'name'                  => 'required|min:3|max:100',
@@ -101,6 +114,11 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
+        // dd($id);
+        if(Auth::user()->role_id == 5 && Auth::user()->id != $id) {
+            abort(403);
+            exit;
+        }
         $user = User::join('roles as r', 'users.role_id', '=', 'r.id')
                 ->where('users.id', $id)
                 ->select('users.id', 'users.name', 'users.email', 'r.name as role')
@@ -114,6 +132,10 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
+        if(Auth::user()->role_id == 5 && Auth::user()->id != $id) {
+            abort(403);
+            exit;
+        }
         $roles = Role::all();
         $user = User::find($id);
         // dd($user);
@@ -128,6 +150,10 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        if(Auth::user()->role_id == 5 && Auth::user()->id != $id) {
+            abort(403);
+            exit;
+        }
         // dd($request->all());
         $request->validate([
             'name'                  => 'required|min:3|max:100',
@@ -169,10 +195,15 @@ class UserController extends Controller
         // $user = User::find($id);
         // $user->delete();
 
-        User::destroy($id);
+        if(Auth::user()->role_id != 1 && Auth::user()->role_id != 2) {
+            abort(403);
+            exit;
+        }else{
+            User::destroy($id);
+            return redirect()
+                    ->route('users.index')
+                    ->with('success', 'User deleted successfully');
+        }
 
-        return redirect()
-                ->route('users.index')
-                ->with('success', 'User deleted successfully');
     }
 }
