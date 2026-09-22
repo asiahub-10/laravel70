@@ -16,7 +16,7 @@ class UserController extends Controller
     public function index()
     {
         // $users = User::all();
-        // $users = User::orderBy('id', 'desc')->get();
+        // $users = User::orderBy('id', 'desc')->first();
         // $users = User::orderBy('name', 'asc')->get();
         // $users = User::orderBy('id', 'asc')->offset(10)->limit(5)->get();
         // $users = User::orderBy('id', 'asc')->offset(10)->first();

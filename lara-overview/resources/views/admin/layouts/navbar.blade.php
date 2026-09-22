@@ -16,6 +16,12 @@
           <a class="nav-link" href="#">Pricing</a>
         </li>
         <li class="nav-item">
+          <a class="nav-link" href="{{ route('customers.index') }}">Customers</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ route('customers.create') }}">Create Customer</a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link disabled" aria-disabled="true">Disabled</a>
         </li>
       </ul>
