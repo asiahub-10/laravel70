@@ -22,7 +22,14 @@
             <!-- Search bar -->
             <div class="table-search-box">
                 <i class="bi bi-search table-search-icon"></i>
-                <input type="text" class="table-search-input" placeholder="Search orders or products...">
+                <input list="cities" type="text" class="table-search-input" placeholder="Search orders or products...">
+                {{-- <datalist id="cities">
+                    <option value="Mursalin">
+                    <option value="Khairul">
+                    <option value="Fahim">
+                    <option value="Rion">
+                    <option value="Arif">
+                </datalist> --}}
             </div>
             <!-- Action buttons / Filter options -->
             <div class="table-filter-group">
@@ -54,46 +61,34 @@
                         <th class="text-center">Actions</th>
                     </tr>
                 </thead>
-                <tbody>
-                    {{-- @foreach ($users as $item)
+                <tbody id="tbody">
+                    @foreach ($roles as $item)
                         <tr>
-                            <td class="table-order-id">{{ $item->id }}</td>
-                            <td>
-                                <div class="table-user-cell">
-                                    <span
-                                        class="table-user-avatar bg-brand-lime d-flex align-items-center justify-content-center text-lime fw-bold fs-5">{{ Str::substr($item->name, 0, 1) }}</span>
-                                    <div>
-                                        <div class="table-user-name">{{ $item->name }}</div>
-                                        <div class="table-user-sub">{{ $item->email }}</div>
-                                    </div>
-                                </div>
+                            <td class="table-order-id">
+                                {{ $roles->firstItem() + $loop->index }}
                             </td>
-                            <td class="table-product-name">{{ $item->role }}</td>
+                            <td>{{ $item->name }}</td>
                             <td>
                                 <div class="d-flex justify-content-center gap-1">
-                                    <a href="{{ route('users.show', ['user' => $item->id]) }}" class="table-btn-action"
-                                        title="View details"><i class="bi bi-eye"></i></a>
-                                    <a href="{{ route('users.edit', ['user' => $item->id]) }}" class="table-btn-action"
+                                    <a href="{{ route('roles.edit', ['role' => $item->id]) }}" class="table-btn-action"
                                         title="Edit row"><i class="bi bi-pencil"></i></a>
-                                    @if(auth()->user()->role_id == 1 || auth()->user()->role_id == 2)
-                                    <button type="button" class="table-btn-action delete" 
-                                    data-id="{{ $item->id }}" 
-                                    data-name="{{ $item->name }}" 
-                                    data-bs-toggle="modal" data-bs-target="#modalDelete"
-                                     title="Delete row">
-                                     <i class="bi bi-trash"></i></button>
+                                    @if (auth()->user()->role_id == 1 || auth()->user()->role_id == 2)
+                                        <button type="button" class="table-btn-action delete" data-id="{{ $item->id }}"
+                                            data-name="{{ $item->name }}" data-bs-toggle="modal"
+                                            data-bs-target="#modalDelete" title="Delete row">
+                                            <i class="bi bi-trash"></i></button>
                                     @endif
                                 </div>
                             </td>
                         </tr>
-                    @endforeach --}}
+                    @endforeach
                 </tbody>
             </table>
         </div>
 
         <!-- Footer Controls / Pagination -->
         <div class="table-footer-control">
-            {{-- {{ $users->links() }} --}}
+            {{ $roles->links() }}
         </div>
     </div>
 
@@ -118,6 +113,7 @@
         .table-footer-control nav {
             width: 100%;
         }
+
         .table-footer-control nav div:last-child {
             display: flex;
             align-items: center;
@@ -127,16 +123,67 @@
 @endsection
 
 @section('script')
-<script>
-    document.querySelectorAll('.delete').forEach(button => {
-        button.addEventListener('click', function () {
-            let id = this.dataset.id;
-            let name = this.dataset.name;
-            // alert(id);
-            document.querySelector('#modalDelete .name').innerText = name;
-            // document.querySelector('#modalDelete form').action = `/users/${id}`;
-            document.querySelector('#modalDelete form').action = `{{ route('users.destroy', ['user' => '_id']) }}`.replace('_id', id);
-        })
-    })
-</script>
+    <script>
+        function loadDelete() {
+            document.querySelectorAll('.delete').forEach(button => {
+                button.addEventListener('click', function() {
+                    let id = this.dataset.id;
+                    let name = this.dataset.name;
+                    // alert(id);
+                    document.querySelector('#modalDelete .name').innerText = name;
+                    // document.querySelector('#modalDelete form').action = `/roles/${id}`;
+                    document.querySelector('#modalDelete form').action =
+                        `{{ route('roles.destroy', ['role' => '_id']) }}`.replace('_id', id);
+                })
+            })
+        }
+        loadDelete();
+    </script>
+    <script>
+        let searchInput = $('.table-search-input');
+        searchInput.on('input', function() {
+            $.ajax({
+                url: '{{ route('roles.search') }}',
+                method: 'GET',
+                data: {
+                    search: $(this).val(),
+                    // _token: '{{ csrf_token() }}'
+                },
+                success: function(res) {
+                    // console.log(res.data);
+                    let rows = res.data;
+                    let html = '';
+                    rows.forEach((item, i) => {
+                        const editUrl = "{{ route('roles.edit', ['role' => ':id']) }}";
+                        let url = editUrl.replace(':id', item.id);
+                        html += `
+                        <tr>
+                            <td class="table-order-id">
+                                ${i + 1}
+                            </td>
+                            <td>${item.name}</td>
+                            <td>
+                                <div class="d-flex justify-content-center gap-1">
+                                    <a href="${url}" class="table-btn-action"
+                                        title="Edit row"><i class="bi bi-pencil"></i></a>
+                                    @if (auth()->user()->role_id == 1 || auth()->user()->role_id == 2)
+                                        <button type="button" class="table-btn-action delete" data-id="${item.id}"
+                                            data-name="${item.name}" data-bs-toggle="modal"
+                                            data-bs-target="#modalDelete" title="Delete row">
+                                            <i class="bi bi-trash"></i></button>
+                                    @endif
+                                </div>
+                            </td>
+                        </tr>
+                        `;
+                    });
+                    $('#tbody').html(html);
+                    loadDelete();
+                },
+                error: function(err) {
+                    console.log(err);
+                }
+            })
+        });
+    </script>
 @endsection

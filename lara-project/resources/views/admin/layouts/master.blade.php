@@ -42,6 +42,7 @@
          ========================================== -->
 
   <!-- Local Third-Party Libraries Script dependencies -->
+  <script src="https://code.jquery.com/jquery-4.0.0.min.js"></script>
   <script src="{{ asset('assets/libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 
   @yield('script')
