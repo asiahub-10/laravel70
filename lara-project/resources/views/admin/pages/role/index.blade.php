@@ -22,7 +22,7 @@
             <!-- Search bar -->
             <div class="table-search-box">
                 <i class="bi bi-search table-search-icon"></i>
-                <input list="cities" type="text" class="table-search-input" placeholder="Search orders or products...">
+                <input list="cities" type="search" class="table-search-input" placeholder="Search roles...">
                 {{-- <datalist id="cities">
                     <option value="Mursalin">
                     <option value="Khairul">
