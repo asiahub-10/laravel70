@@ -43,6 +43,20 @@
     @include('site.layouts.footer')
 
     <script src={{ asset('assets-site/js/main.js') }} defer></script>
+    <script src={{ asset('helpers/cart-helper.js') }}></script>
+    <script>
+        const cart = new CartHelper('laraCart');
+        function addToCart(id,name,price,img) {
+            cart.addItem(id,name,price,img);
+            printItemsNumber();
+        }
+        // console.log(cart.countItems());
+        function printItemsNumber(){
+            document.querySelector('.icon-btn--cart .count').innerText = cart.countItems();
+        }
+        printItemsNumber();
+    </script>
+
     @yield('script')
 </body>
 

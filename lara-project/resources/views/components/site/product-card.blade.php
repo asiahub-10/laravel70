@@ -32,8 +32,9 @@
         </div>
     </a>
 
-    <a href="cart.html" class="btn">
-        Order now →
+    <a href="javascript:void(0)" onclick="addToCart({{$item->id}},'{{$item->name}}',{{$item->price}},'{{$item->image ?? ''}}')" class="btn">
+        Add to Cart →
     </a>
+    {{-- addToCart(12, "Apple Watch Series 9", 500) --}}
 
 </article>

@@ -17,7 +17,7 @@ class CartHelper {
         return this.cart.findIndex(item => item.id == productId);
     }
 
-    addItem(id, name, price, quantity = 1, discount = 0) {
+    addItem(id, name, price, img = '', quantity = 1, discount = 0) {
         id = parseInt(id);
         price = parseFloat(price);
         quantity = parseInt(quantity);
@@ -27,7 +27,7 @@ class CartHelper {
         if (index !== -1) {
             this.cart[index].quantity += quantity;
         } else {
-            this.cart.push({ id, name, price, quantity, discount });
+            this.cart.push({ id, name, price, img, quantity, discount });
         }
         this.saveCart();
     }
@@ -74,5 +74,9 @@ class CartHelper {
             const discounted = item.price - (item.discount || 0);
             return total + (discounted * item.quantity);
         }, 0).toFixed(2);
+    }
+
+    countItems() {
+        return this.cart.length;
     }
 }
