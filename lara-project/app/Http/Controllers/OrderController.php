@@ -28,8 +28,9 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        $items = json_decode($request->items);
+        // dd($request->all());
         // dd($items);
+        $items = json_decode($request->items);
         $order = Order::create([
                     'name'              => $request->name,
                     'phone'             => $request->phone,
@@ -43,6 +44,8 @@ class OrderController extends Controller
                 'quantity'   => $item->quantity,
             ]);
         }
+
+        return redirect()->route('cart')->with('success', 'Your order has been placed. Thanks for shoping with us.');
     }
 
     /**

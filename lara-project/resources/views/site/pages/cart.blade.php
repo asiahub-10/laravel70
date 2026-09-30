@@ -10,7 +10,21 @@
                 <div class="crumbs"><a href="index.html">Home</a> <span class="sep">›</span> <span>Shopping cart</span>
                 </div>
                 <h1>Your cart</h1>
-                <p>3 items · ready to ship. Free delivery on this order. Estimated arrival 21 – 23 May.</p>
+                <p>Ready to ship. Free delivery on this order. Estimated arrival 21 – 23 May.</p>
+                @if (session('success'))
+                    <div
+                        style="margin-top: var(--s7); padding: var(--s6); background: linear-gradient(135deg, var(--indigo), var(--card-purple)); color: var(--paper); border-radius: var(--r-lg); position: relative; overflow: hidden">
+                        <div
+                            style="position: absolute; inset: 0; background-image: radial-gradient(circle at 80% 20%, rgba(255,255,255,0.18) 0, transparent 40%); pointer-events: none">
+                        </div>
+                        <div style="position: relative">
+                            <h5 style="color: var(--paper); font-size: var(--text-xl); margin-bottom: var(--s3)">
+                                {{ session('success') }}
+                            </h5>
+                            <a href="/" class="btn btn--paper">Continue Shopping →</a>
+                        </div>
+                    </div>
+                @endif
             </div>
         </section>
 
@@ -62,7 +76,8 @@
                                     <div style="font-family:var(--ff-display); font-weight:700; font-size:var(--text-sm)">
                                         2-year warranty
                                     </div>
-                                    <div style="font-family:var(--ff-mono); font-size:11px; color:var(--fg-mute)">On every
+                                    <div style="font-family:var(--ff-mono); font-size:11px; color:var(--fg-mute)">On
+                                        every
                                         Sprylo order
                                     </div>
                                 </div>
@@ -86,7 +101,8 @@
 
                         <div class="cart-line is-total"><span>Total</span><span id="total">$0.00</span></div>
 
-                        <a href="javascript:void(0);" class="btn-proceed btn btn--indigo btn--block">Proceed to checkout →</a>
+                        <a href="javascript:void(0);" class="btn-proceed btn btn--indigo btn--block">Proceed to checkout
+                            →</a>
 
                         <form action="{{ route('orders.store') }}" method="POST" class="checkout-form">
                             @csrf
@@ -97,7 +113,8 @@
                                 </div>
                                 <div class="field">
                                     <label for="c-last">Phone</label>
-                                    <input id="c-last" type="tel" name="phone" required="" placeholder="0151 123 456">
+                                    <input id="c-last" type="tel" name="phone" required=""
+                                        placeholder="0151 123 456">
                                 </div>
                             </div>
                             <div class="field">
@@ -110,8 +127,7 @@
                             </div>
                             <div class="field">
                                 <label for="c-msg">Shipping Address</label>
-                                <textarea name="shipping_address" id="c-msg" required=""
-                                    placeholder="12 Mothijheel, Dhaka-100"></textarea>
+                                <textarea name="shipping_address" id="c-msg" required="" placeholder="12 Mothijheel, Dhaka-100"></textarea>
                             </div>
                             <input type="hidden" name="items" value="">
                             <button type="submit" class="btn btn--indigo btn--block">Order Now →</button>
@@ -134,7 +150,8 @@
 
                         <p
                             style="margin-top: var(--s5); font-size: 11px; font-family: var(--ff-mono); color: var(--fg-mute); text-align: center; line-height: 1.6">
-                            Encrypted checkout · SSL secured. Your payment information is never stored on our servers.</p>
+                            Encrypted checkout · SSL secured. Your payment information is never stored on our servers.
+                        </p>
                     </aside>
 
                 </div>
@@ -145,14 +162,19 @@
 @endsection
 
 @section('style')
-<style>
-    .checkout-form{
-        display: none;
-    }
-</style>
+    <style>
+        .checkout-form {
+            display: none;
+        }
+    </style>
 @endsection
 
 @section('script')
+    @if (session('success'))
+        <script>
+            cart.emptyCart();
+        </script>
+    @endif
     <script>
         // Cart
         // =================
@@ -193,7 +215,7 @@
             document.querySelector('#shippingCost').innerText = "$" + (subtotal ? 30 : 0).toFixed(2);
             document.querySelector('#tax').innerText = `$${(subtotal * .05).toFixed(2)}`;
             document.querySelector('#total').innerText =
-                `$${(subtotal + (subtotal ? 30 : 0) + (subtotal * .05)).toFixed(2)}`;            
+                `$${(subtotal + (subtotal ? 30 : 0) + (subtotal * .05)).toFixed(2)}`;
         }
         printCart();
 
