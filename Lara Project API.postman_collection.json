@@ -1,0 +1,30 @@
+{
+  "info": {
+    "_postman_id": "c2ad52a7-001e-4596-afb7-3f38d8aa5aa2",
+    "name": "Lara Project API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "57427848",
+    "_collection_link": "https://go.postman.co/collection/57427848-c2ad52a7-001e-4596-afb7-3f38d8aa5aa2?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "user",
+      "item": [
+        {
+          "name": "all",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{lara_api}}users",
+              "host": [
+                "{{lara_api}}users"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
