@@ -43,13 +43,14 @@ class UserController extends Controller
         $users = User::join('roles as r', 'users.role_id', '=', 'r.id')
             ->orderBy('id', 'desc')
             ->select('users.id', 'users.name', 'users.email', 'r.name as role')
-            ->get();
-            // ->paginate(10);
+            // ->get();
+            ->paginate(10);
 
         // dd($users);
         // return view('admin.pages.user.index', compact('users'));
         return response()->json([
-            'users' => $users
+            'success'   => true,
+            'users'     => $users
         ]);
     }
 
