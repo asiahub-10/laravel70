@@ -219,5 +219,10 @@
         @if (Route::has('login'))
             <div class="h-14.5 hidden lg:block"></div>
         @endif
+        {{-- @php
+            $name = "<script>alert('hello')</script>";
+        @endphp
+        <h1 class="text-white">{{ $name }}</h1>
+        <h1 class="text-white">{!! $name !!}</h1> --}}
     </body>
 </html>
