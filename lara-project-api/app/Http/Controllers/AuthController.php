@@ -74,4 +74,17 @@ class AuthController extends Controller
 
         return response()->json("Logout works");
     }
+
+    public function checkToken(Request $request) {
+        $result = Auth::guard('sanctum')->check();
+        if(!$result){
+            return response()->json([
+                'error'     => true,
+                'message'   => 'Invalid token'
+            ], 401);
+        }else{
+            $user = Auth::guard('sanctum')->user();
+            return response()->json($user);
+        }       
+    }
 }

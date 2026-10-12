@@ -10,9 +10,18 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // })->middleware('auth:sanctum');
 
+Route::post('test', function (Request $request) {
+    // return response()->json("test works");
+    return response()->json([
+        'body' => $request->all(),
+        'headers' => $request->headers->all()
+    ]);
+});
+
 Route::apiResource('users', UserController::class);
 Route::get('roles',[RoleController::class, 'index']);
 
 Route::post('login',[AuthController::class, 'login']);
 Route::post('register',[AuthController::class, 'register']);
 Route::post('logout',[AuthController::class, 'logout'])->middleware('auth:sanctum');
+Route::post('check-token',[AuthController::class, 'checkToken']);
