@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
@@ -19,6 +20,7 @@ Route::post('test', function (Request $request) {
 });
 
 Route::apiResource('users', UserController::class);
+Route::apiResource('products', ProductController::class)->names('api.products');
 Route::get('roles',[RoleController::class, 'index']);
 
 Route::post('login',[AuthController::class, 'login']);
