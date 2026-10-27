@@ -45,6 +45,12 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        if ($request->hasFile('image')) {
+            return response()->json("Image found");
+        } else {
+            return response()->json("Image not found");
+        }
+
         $validated = $request->validate([
             'name'          => 'required|min:3',
             'price'         => 'required|numeric',
