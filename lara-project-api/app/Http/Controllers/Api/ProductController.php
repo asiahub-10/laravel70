@@ -45,21 +45,20 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        if ($request->hasFile('image')) {
-            return response()->json("Image found");
-        } else {
-            return response()->json("Image not found");
-        }
+        // if ($request->active) {
+        //     return response()->json($request->active);
+        // } else {
+        //     return response()->json("Image not found");
+        // }
 
         $validated = $request->validate([
             'name'          => 'required|min:3',
             'price'         => 'required|numeric',
             'quantity'      => 'required|integer',
-            'reorder_level' => 'required|integer',
-            'description'   => 'required|string',
+            'reorder_level' => 'nullable|integer|min:0',
+            'description'   => 'nullable|string',
             'category_id'   => 'required|exists:categories,id',
             'brand_id'      => 'required|exists:brands,id',
-            'active'        => 'boolean',
             'image'         => 'image|mimes:jpeg,png,jpg|max:500',
         ]);
 

@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BrandController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -22,6 +24,8 @@ Route::post('test', function (Request $request) {
 Route::apiResource('users', UserController::class);
 Route::apiResource('products', ProductController::class)->names('api.products');
 Route::get('roles',[RoleController::class, 'index']);
+Route::get('categories',[CategoryController::class, 'index']);
+Route::get('brands',[BrandController::class, 'index']);
 
 Route::post('login',[AuthController::class, 'login']);
 Route::post('register',[AuthController::class, 'register']);
