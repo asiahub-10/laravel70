@@ -101,7 +101,6 @@ class ProductController extends Controller
             'description'   => 'required|string',
             'category_id'   => 'required|exists:categories,id',
             'brand_id'      => 'required|exists:brands,id',
-            'active'        => 'boolean',
             'image'         => 'image|mimes:jpeg,png,jpg|max:500',
         ]);
 
